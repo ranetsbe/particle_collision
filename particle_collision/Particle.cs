@@ -9,14 +9,12 @@ namespace particle_collision
 {
     class Particle : Collidable
     {
-        public Color color;
-        public Rectangle rect;
+        public Color color = Color.Black;
+        public long steppingTime = 0;
 
-        public Particle(Vector position, Vector velocity, int radius) 
-            : base(position, velocity, radius)
-        {
-            color = Color.Black;
-        }
+
+        public Particle(Vector position, Vector velocity, int radius)
+            : base(position, velocity, radius) { }
 
 
         // return the velocity vector of this instance after colliding with b
@@ -74,7 +72,6 @@ namespace particle_collision
 
             if (c < r)
             {
-                Console.WriteLine("c < r: c = " + c.ToString() + " r = " + r.ToString());
                 return Double.MaxValue;
             }
 
@@ -82,7 +79,6 @@ namespace particle_collision
             double discriminant = d * d - 4 * a * c;
             if (discriminant < 0)
             {
-                Console.WriteLine("disc < 0: disc = " + discriminant.ToString());
                 return Double.MaxValue;
             }
             double sqrt_disc = Math.Sqrt(discriminant);
@@ -100,7 +96,6 @@ namespace particle_collision
             {
                 return s2;
             }
-            Console.Write("computeCollision: error: no result");
             return Double.MaxValue;
         }
 
@@ -108,7 +103,7 @@ namespace particle_collision
         public void Draw(Graphics graphics)
         {
             Rectangle rect = new Rectangle((int)position.x, (int)position.y, (int)radius, (int)radius);
-            SolidBrush brush = new SolidBrush(Color.LightGray);
+            SolidBrush brush = new SolidBrush(Color.Blue);
             graphics.FillEllipse(brush, rect);
             brush.Dispose();
         }
