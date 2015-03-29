@@ -16,15 +16,19 @@ namespace particle_collision
 
         public Vector()
         {
-            x = 0;
-            y = 0;
+            x = 0.0;
+            y = 0.0;
         }
 
+        // implicit
         public Vector(double x, double y)
         {
             this.x = x;
             this.y = y;
         }
+
+        // copy constructor
+        public Vector(Vector copy) : this(copy.x, copy.y) {}
 
         // dot product
         public static double dot(Vector a, Vector b)
@@ -62,6 +66,14 @@ namespace particle_collision
             return res;
         }
 
+        // return new vector a * c
+        public static Vector scalarMult(Vector a, double c)
+        {
+            Vector res = new Vector(a);
+            res.scalarMult(c);
+            return res;
+        }
+
         // return normal vector
         public static Vector norm(Vector a)
         {
@@ -85,7 +97,7 @@ namespace particle_collision
         public double magnitude() {
             double res = x*x;
             res += y*y;
-            return res;
+            return Math.Sqrt(res);
         }
 
         // scalar multiply

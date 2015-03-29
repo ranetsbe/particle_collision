@@ -55,6 +55,7 @@
     <Compile Include="HeapPriorityQueue.cs" />
     <Compile Include="IPriorityQueue.cs" />
     <Compile Include="Particle.cs" />
+    <Compile Include="Plane.cs" />
     <Compile Include="PriorityQueueNode.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
