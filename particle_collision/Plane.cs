@@ -22,6 +22,9 @@ namespace particle_collision
 
         // return the time when b will collide with this plane
         // return long.MaxValue if b will never collide
+#if NET_VERSION_4_5
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public override long computeCollisionTime(Collidable b)
         {
             Vector n = this.velocity;   // plane normal

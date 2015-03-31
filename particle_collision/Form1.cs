@@ -27,7 +27,7 @@ namespace particle_collision
 
         // timer to refresh graphics
         private System.Windows.Forms.Timer RefreshTimer = new System.Windows.Forms.Timer();
-        private readonly int REFRESH_TIMER_INTERVAL = 10; // 60hz
+        private readonly int REFRESH_TIMER_INTERVAL = 30; // 30hz
 
         // keeps track of the current simulation time
         Stopwatch globalTime;
@@ -168,28 +168,21 @@ namespace particle_collision
                     long collisionTime = c.collisionTime;
                     long originalTime = c.steppingTime;
                     long currentTime = globalTime.ElapsedMilliseconds;
-                    int delay = (int)(collisionTime);
+                    int delay = (int)(collisionTime + originalTime - currentTime);
                     if (delay > 0)
                     {
                         System.Threading.Thread.Sleep(delay);
                     }
+                    globalTime.Stop();
                     // update collidable positions
                     currentTime = globalTime.ElapsedMilliseconds;
                     stepParticles(currentTime);
                     c1.setPosition(c.c1_target, currentTime);
                     c2.setPosition(c.c2_target, currentTime);
-                    //System.Console.WriteLine("c1 vel = <" + c1.velocity.x.ToString() + ", " + c1.velocity.y.ToString() + ">");
-                    //System.Console.WriteLine("c2 vel = <" + c2.velocity.x.ToString() + ", " + c2.velocity.y.ToString() + ">");
-                    //System.Console.WriteLine("c2 tar = <" + c.c2_target.x.ToString() + ", " + c.c2_target.y.ToString() + ">");
                     Collidable.doCollision(c.c1, c.c2);
-                    //System.Console.WriteLine("c1 vel = <" + c1.velocity.x.ToString() + ", " + c1.velocity.y.ToString() + ">");
-                    //System.Console.WriteLine("c2 vel = <" + c2.velocity.x.ToString() + ", " + c2.velocity.y.ToString() + ">");
-                    //System.Console.WriteLine("c1 pos = <" + c1.position.x.ToString() + ", " + c1.position.y.ToString() + ">");
-                    //System.Console.WriteLine("c2 pos = <" + c2.position.x.ToString() + ", " + c2.position.y.ToString() + ">");
-                    //updateCollisionInfos(currentTime);
                     updateCollisionInfos(c1.id, currentTime);
                     updateCollisionInfos(c2.id, currentTime);
-                    //System.Console.WriteLine("next collision in " + heap.First.collisionTime.ToString());
+                    globalTime.Start();
                 }
             }
         }

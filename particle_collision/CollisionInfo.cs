@@ -25,9 +25,12 @@ namespace particle_collision
 
         // return the time that c1 and c2 will collide.
         // **note** that for a particle to collide with a plane, c1 must be the plane
-        public double computeCollision(long globalTime)
+#if NET_VERSION_4_5
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public double computeCollision(long currentTime)
         {
-            steppingTime = 0;
+            steppingTime = currentTime;
             collisionTime = c1.computeCollisionTime(c2);
             c1_target = c1.targetPosition(collisionTime);
             c2_target = c2.targetPosition(collisionTime);
@@ -35,7 +38,7 @@ namespace particle_collision
             {
                 return long.MaxValue;
             }
-            return globalTime + collisionTime;
+            return collisionTime + currentTime;
         }
     }
 }

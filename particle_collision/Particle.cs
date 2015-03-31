@@ -29,7 +29,6 @@ namespace particle_collision
 
             if (m2 == 0.0)
             {
-                System.Console.WriteLine("colliding with plane");
                 Vector vaf = vai;
                 if (vbi.x != 0)
                 {
@@ -67,6 +66,9 @@ namespace particle_collision
         //   if two collidables are touching (ie c1.radius + c2.radius is exactly equal to dist(c1,c2)) 
         //   then t is equal to the distance between the two objects
         //   could check for this condition but it would be expensive
+#if NET_VERSION_4_5
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public override long computeCollisionTime(Collidable b)
         {
             Vector r1 = this.position;
@@ -117,6 +119,10 @@ namespace particle_collision
             return long.MaxValue;
         }
 
+        // return the position of this object after t milliseconds
+#if NET_VERSION_4_5
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public override Vector targetPosition(long t)
         {
             double timeScalar = t / 1000.0;
@@ -124,12 +130,15 @@ namespace particle_collision
         }
 
         // Paint ourselves with the specified Graphics object
+#if NET_VERSION_4_5
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public void Draw(Graphics graphics, long globalTime)
         {
             double timeScalar = (globalTime - steppingTime) / 1000.0;
             int x = (int)(position.x + velocity.x * timeScalar);
             int y = (int)(position.y + velocity.y * timeScalar);
-            Rectangle rect = new Rectangle(x, y, (int)radius, (int)radius);
+            Rectangle rect = new Rectangle(x, y, (int)radius*2, (int)radius*2);
             SolidBrush brush = new SolidBrush(Color.Blue);
             graphics.FillEllipse(brush, rect);
             brush.Dispose();

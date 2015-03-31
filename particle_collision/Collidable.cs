@@ -27,6 +27,9 @@ namespace particle_collision
         }
 
         // sets the position and stepping time
+#if NET_VERSION_4_5
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public void setPosition(Vector p, long t)
         {
             steppingTime = t;
@@ -44,18 +47,27 @@ namespace particle_collision
 
         // return the time t when this instance and b will collide
         // non-overriden virtual method returns double.MaxValue
+#if NET_VERSION_4_5
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public virtual long computeCollisionTime(Collidable c2)
         {
             return long.MaxValue;
         }
 
         // return the position of this instance after t milliseconds
+#if NET_VERSION_4_5
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public virtual Vector targetPosition(long t)
         {
             return position;
         }
 
         // compute the final velocities of a and b after colliding
+#if NET_VERSION_4_5
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static void doCollision(Collidable a, Collidable b)
         {
             Vector vaf = a.collisionResponse(b);

@@ -35,6 +35,9 @@ namespace particle_collision
         }
 
         // dot product
+#if NET_VERSION_4_5
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static double dot(Vector a, Vector b)
         {
             double res = 0;
@@ -44,6 +47,9 @@ namespace particle_collision
         }
 
         // vector addition a + b
+#if NET_VERSION_4_5
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Vector add(Vector a, Vector b)
         {
             Vector res = new Vector();
@@ -53,6 +59,9 @@ namespace particle_collision
         }
 
         // vector subtraction a - b
+#if NET_VERSION_4_5
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Vector sub(Vector a, Vector b)
         {
             Vector res = new Vector();
@@ -62,6 +71,9 @@ namespace particle_collision
         }
 
         // return vector component multiply a*b
+#if NET_VERSION_4_5
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Vector mult(Vector a, Vector b)
         {
             Vector res = new Vector();
@@ -71,6 +83,9 @@ namespace particle_collision
         }
 
         // return new vector a * c
+#if NET_VERSION_4_5
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Vector scalarMult(Vector a, double c)
         {
             Vector res = new Vector(a);
@@ -79,6 +94,9 @@ namespace particle_collision
         }
 
         // return normal vector
+#if NET_VERSION_4_5
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Vector normal(Vector a)
         {
             Vector res = new Vector();
@@ -88,6 +106,9 @@ namespace particle_collision
         }
 
         // return unit vector
+#if NET_VERSION_4_5
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public static Vector unit(Vector a)
         {
             if (a == null)
@@ -98,8 +119,11 @@ namespace particle_collision
             res.y = a.y / mag;
             return res;
         }
-        
+
         // return vector magnitude
+#if NET_VERSION_4_5
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public double magnitude() {
             double res = x*x;
             res += y*y;
@@ -107,6 +131,9 @@ namespace particle_collision
         }
 
         // scalar multiply
+#if NET_VERSION_4_5
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         public void scalarMult(double c)
         {
             x *= c;
