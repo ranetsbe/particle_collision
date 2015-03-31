@@ -113,12 +113,12 @@ namespace particle_collision
         {
             foreach (Particle p in particles)
             {
+                p.position = p.targetPosition(t - p.steppingTime);
                 p.steppingTime = t;
-                p.position = p.targetPosition(t);
             }
         }
 
-        // update the collisionInfos for collidable with id1
+        // update the collisionInfos for collidable with id1 O(n)
         private void updateCollisionInfos(int cid, long currentTime)
         {
             if (cid < n_particles) {
@@ -133,6 +133,19 @@ namespace particle_collision
                 {
                     CollisionInfo ci = collisionData[cid, i];
                     heap.UpdatePriority(ci, ci.computeCollision(currentTime));
+                }
+            }
+        }
+
+        // O(n^2)
+        private void updateCollisionInfos(long currentTime)
+        {
+            for (int i = 0; i < n_particles; i++)
+            {
+                for (int j = i + 1; j < n_particles + 4; j++)
+                {
+                    CollisionInfo c = collisionData[i, j];
+                    heap.UpdatePriority(c, c.computeCollision(currentTime));
                 }
             }
         }
@@ -165,17 +178,18 @@ namespace particle_collision
                     stepParticles(currentTime);
                     c1.setPosition(c.c1_target, currentTime);
                     c2.setPosition(c.c2_target, currentTime);
-                    System.Console.WriteLine("c1 vel = <" + c1.velocity.x.ToString() + ", " + c1.velocity.y.ToString() + ">");
-                    System.Console.WriteLine("c2 vel = <" + c2.velocity.x.ToString() + ", " + c2.velocity.y.ToString() + ">");
-                    System.Console.WriteLine("c2 tar = <" + c.c2_target.x.ToString() + ", " + c.c2_target.y.ToString() + ">");
+                    //System.Console.WriteLine("c1 vel = <" + c1.velocity.x.ToString() + ", " + c1.velocity.y.ToString() + ">");
+                    //System.Console.WriteLine("c2 vel = <" + c2.velocity.x.ToString() + ", " + c2.velocity.y.ToString() + ">");
+                    //System.Console.WriteLine("c2 tar = <" + c.c2_target.x.ToString() + ", " + c.c2_target.y.ToString() + ">");
                     Collidable.doCollision(c.c1, c.c2);
-                    System.Console.WriteLine("c1 vel = <" + c1.velocity.x.ToString() + ", " + c1.velocity.y.ToString() + ">");
-                    System.Console.WriteLine("c2 vel = <" + c2.velocity.x.ToString() + ", " + c2.velocity.y.ToString() + ">");
-                    System.Console.WriteLine("c1 pos = <" + c1.position.x.ToString() + ", " + c1.position.y.ToString() + ">");
-                    System.Console.WriteLine("c2 pos = <" + c2.position.x.ToString() + ", " + c2.position.y.ToString() + ">");
+                    //System.Console.WriteLine("c1 vel = <" + c1.velocity.x.ToString() + ", " + c1.velocity.y.ToString() + ">");
+                    //System.Console.WriteLine("c2 vel = <" + c2.velocity.x.ToString() + ", " + c2.velocity.y.ToString() + ">");
+                    //System.Console.WriteLine("c1 pos = <" + c1.position.x.ToString() + ", " + c1.position.y.ToString() + ">");
+                    //System.Console.WriteLine("c2 pos = <" + c2.position.x.ToString() + ", " + c2.position.y.ToString() + ">");
+                    //updateCollisionInfos(currentTime);
                     updateCollisionInfos(c1.id, currentTime);
                     updateCollisionInfos(c2.id, currentTime);
-                    System.Console.WriteLine("next collision in " + heap.First.collisionTime.ToString());
+                    //System.Console.WriteLine("next collision in " + heap.First.collisionTime.ToString());
                 }
             }
         }
