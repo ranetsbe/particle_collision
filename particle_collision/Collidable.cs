@@ -8,18 +8,29 @@ namespace particle_collision
 {
     class Collidable : PriorityQueueNode
     {
+        public int id;
         public Vector position { get; set; }    // x,y position
         public Vector velocity { get; set; }    // velocity vector
         public double radius { get; set; }      // radius
         public double mass { get; set; }        // mass is radius^2
+        public long steppingTime { get; set; }  // the most recent time that position changed
 
-        // init collidable with position, velocity and radius
-        public Collidable(Vector p, Vector v, double r)
+        // constructor
+        public Collidable(Vector p, Vector v, double r, double m, int n)
         {
             velocity = v;
             position = p;
             radius = r;
-            mass = r * r;
+            mass = m;
+            id = n;
+            steppingTime = 0;
+        }
+
+        // sets the position and stepping time
+        public void setPosition(Vector p, long t)
+        {
+            steppingTime = t;
+            position = p;
         }
 
         // return the velocity vector of this instance after colliding with b
@@ -33,9 +44,15 @@ namespace particle_collision
 
         // return the time t when this instance and b will collide
         // non-overriden virtual method returns double.MaxValue
-        public virtual double computeCollisionTime(Collidable c2)
+        public virtual long computeCollisionTime(Collidable c2)
         {
-            return double.MaxValue;
+            return long.MaxValue;
+        }
+
+        // return the position of this instance after t milliseconds
+        public virtual Vector targetPosition(long t)
+        {
+            return position;
         }
 
         // compute the final velocities of a and b after colliding

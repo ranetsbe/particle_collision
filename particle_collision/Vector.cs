@@ -28,7 +28,11 @@ namespace particle_collision
         }
 
         // copy constructor
-        public Vector(Vector copy) : this(copy.x, copy.y) {}
+        public Vector(Vector copy)
+        {
+            x = copy.x;
+            y = copy.y;
+        }
 
         // dot product
         public static double dot(Vector a, Vector b)
@@ -75,7 +79,7 @@ namespace particle_collision
         }
 
         // return normal vector
-        public static Vector norm(Vector a)
+        public static Vector normal(Vector a)
         {
             Vector res = new Vector();
             res.x = -a.y;
@@ -86,6 +90,8 @@ namespace particle_collision
         // return unit vector
         public static Vector unit(Vector a)
         {
+            if (a == null)
+                return null;
             Vector res = new Vector();
             double mag = a.magnitude();
             res.x = a.x / mag;

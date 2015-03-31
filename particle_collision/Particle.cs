@@ -10,11 +10,10 @@ namespace particle_collision
     class Particle : Collidable
     {
         public Color color = Color.Black;
-        public long steppingTime = 0;
 
 
-        public Particle(Vector position, Vector velocity, int radius)
-            : base(position, velocity, radius) { }
+        public Particle(Vector position, Vector velocity, int radius, int n)
+            : base(position, velocity, radius, radius*radius, n) { }
 
 
         // return the velocity vector of this instance after colliding with b
@@ -28,10 +27,25 @@ namespace particle_collision
             Vector vai = new Vector(this.velocity);
             Vector vbi = new Vector(b.velocity);
 
+            if (m2 == 0.0)
+            {
+                System.Console.WriteLine("colliding with plane");
+                Vector vaf = vai;
+                if (vbi.x != 0)
+                {
+                    vaf.x *= -1;
+                }
+                else
+                {
+                    vaf.y *= -1;
+                }
+                return vaf;
+            }
+
             // vector along direction of impact from center of this particle to b 
             Vector n = Vector.unit(Vector.sub(this.position, b.position));
             Vector nrev = Vector.scalarMult(n, -1.0);
-
+       
             double nv1 = Vector.dot(nrev, vai);
             Vector v1n = Vector.scalarMult(nrev, nv1);
             Vector v1t = Vector.sub(vai, v1n);
@@ -53,7 +67,7 @@ namespace particle_collision
         //   if two collidables are touching (ie c1.radius + c2.radius is exactly equal to dist(c1,c2)) 
         //   then t is equal to the distance between the two objects
         //   could check for this condition but it would be expensive
-        public override double computeCollisionTime(Collidable b)
+        public override long computeCollisionTime(Collidable b)
         {
             Vector r1 = this.position;
             Vector v1 = this.velocity;
@@ -72,21 +86,25 @@ namespace particle_collision
 
             if (c < r)
             {
-                return Double.MaxValue;
+                return long.MaxValue;
             }
 
             c = c * c - r * r;
             double discriminant = d * d - 4 * a * c;
             if (discriminant < 0)
             {
-                return Double.MaxValue;
+                return long.MaxValue;
             }
             double sqrt_disc = Math.Sqrt(discriminant);
-            double s1 = (-d + sqrt_disc) / (2 * a);
-            double s2 = (-d - sqrt_disc) / (2 * a);
+            long s1 = (long)((-d + sqrt_disc) / (2 * a) * 1000);
+            long s2 = (long)((-d - sqrt_disc) / (2 * a) * 1000);
             if (s1 > 0 && s2 > 0)
             {
-                return (s1 <= s2) ? s1 : s2;
+                if (s1 <= s2)
+                {
+                    return s1;
+                }
+                return s2; 
             }
             else if (s1 > 0)
             {
@@ -96,13 +114,22 @@ namespace particle_collision
             {
                 return s2;
             }
-            return Double.MaxValue;
+            return long.MaxValue;
+        }
+
+        public override Vector targetPosition(long t)
+        {
+            double timeScalar = t / 1000.0;
+            return Vector.add(position, Vector.scalarMult(velocity, timeScalar));
         }
 
         // Paint ourselves with the specified Graphics object
-        public void Draw(Graphics graphics)
+        public void Draw(Graphics graphics, long globalTime)
         {
-            Rectangle rect = new Rectangle((int)position.x, (int)position.y, (int)radius, (int)radius);
+            double timeScalar = (globalTime - steppingTime) / 1000.0;
+            int x = (int)(position.x + velocity.x * timeScalar);
+            int y = (int)(position.y + velocity.y * timeScalar);
+            Rectangle rect = new Rectangle(x, y, (int)radius, (int)radius);
             SolidBrush brush = new SolidBrush(Color.Blue);
             graphics.FillEllipse(brush, rect);
             brush.Dispose();
