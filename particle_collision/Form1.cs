@@ -118,7 +118,7 @@ namespace particle_collision
             }
         }
 
-        // update the collisionInfos for collidable with id1 O(n)
+        // update the collisionInfos for collidable with id1 O(nlg(n))
         private void updateCollisionInfos(int cid, long currentTime)
         {
             if (cid < n_particles) {
@@ -137,7 +137,7 @@ namespace particle_collision
             }
         }
 
-        // O(n^2)
+        // update all collision infos O(n^2lg(n))
         private void updateCollisionInfos(long currentTime)
         {
             for (int i = 0; i < n_particles; i++)
@@ -153,6 +153,7 @@ namespace particle_collision
         private void bw_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
+            System.Threading.Thread.CurrentThread.Priority = System.Threading.ThreadPriority.Highest;
             while (true)
             {
                 if (worker.CancellationPending == true)
