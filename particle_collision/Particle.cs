@@ -9,11 +9,14 @@ namespace particle_collision
 {
     class Particle : Collidable
     {
-        public Color color = Color.Black;
+        public Color color { set; get; }
 
 
         public Particle(Vector position, Vector velocity, int radius, int n)
-            : base(position, velocity, radius, radius*radius, n) { }
+            : base(position, velocity, radius, radius*radius, n) 
+        {
+            this.color = Color.Black;
+        }
 
 
         // return the velocity vector of this instance after colliding with b
@@ -139,7 +142,7 @@ namespace particle_collision
             int x = (int)(position.x + velocity.x * timeScalar);
             int y = (int)(position.y + velocity.y * timeScalar);
             Rectangle rect = new Rectangle(x, y, (int)radius*2, (int)radius*2);
-            SolidBrush brush = new SolidBrush(Color.Blue);
+            SolidBrush brush = new SolidBrush(color);
             graphics.FillEllipse(brush, rect);
             brush.Dispose();
         }

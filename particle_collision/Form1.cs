@@ -76,11 +76,26 @@ namespace particle_collision
             System.Console.WriteLine(string.Format("initParticles: n_particles = {0}", n_particles));
             for (int i = 0; i < n_particles; i++)
             {
-                int radius = (int)numericUpDown2.Value;
+                int radius = rng.Next(1, 10);
+                //int radius = (int)numericUpDown2.Value;
                 Size panelSize = collisionPanel.Size;
                 Vector pos = new Vector(rng.Next(radius, panelSize.Width - radius), rng.Next(radius, panelSize.Height - radius));
                 Vector vel = new Vector(rng.Next(0, 100), rng.Next(0, 100));
-                particles.Add(new Particle(pos, vel, radius, i));
+                Particle p = new Particle(pos, vel, radius, i);
+                switch(rng.Next(0, 10)){
+                    case 0: p.color = Color.Lime; break;
+                    case 1: p.color = Color.Blue; break;
+                    case 2: p.color = Color.Red; break;
+                    case 3: p.color = Color.Orange; break;
+                    case 4: p.color = Color.Green; break;
+                    case 5: p.color = Color.Yellow; break;
+                    case 6: p.color = Color.Violet; break;
+                    case 7: p.color = Color.Teal; break;
+                    case 8: p.color = Color.DarkOrange; break;
+                    case 9: p.color = Color.DimGray; break;
+                    case 10: p.color = Color.Coral; break;
+                }
+                particles.Add(p);
             }
 
             // hard coded walls
@@ -182,11 +197,17 @@ namespace particle_collision
                     long originalTime = c.steppingTime;
                     long currentTime = globalTime.ElapsedMilliseconds;
                     int delay = (int)(collisionTime + originalTime - currentTime);
-                    if (delay > 0)
+                    //if (delay > 0)
+                    //{
+                    //    System.Threading.Thread.Sleep(delay);
+                    //    delayTime += delay;
+                    //}
+                    while (true)
                     {
-                        System.Threading.Thread.Sleep(delay);
-                        delayTime += delay;
+                        if (collisionTime + originalTime <= globalTime.ElapsedMilliseconds)
+                            break;
                     }
+
                     n_collisions += 1;
                     globalTime.Stop();
                     long statsTimeStart = statsTime.ElapsedMilliseconds;
