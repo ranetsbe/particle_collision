@@ -35,6 +35,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.startButton = new System.Windows.Forms.Button();
             this.stopButton = new System.Windows.Forms.Button();
+            this.collisionsLabel = new System.Windows.Forms.Label();
+            this.delayLabel = new System.Windows.Forms.Label();
+            this.computeLabel = new System.Windows.Forms.Label();
+            this.collisionsValue = new System.Windows.Forms.Label();
+            this.delayValue = new System.Windows.Forms.Label();
+            this.computeValue = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
@@ -140,12 +146,72 @@
             this.stopButton.UseVisualStyleBackColor = true;
             this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
             // 
+            // collisionsLabel
+            // 
+            this.collisionsLabel.AutoSize = true;
+            this.collisionsLabel.Location = new System.Drawing.Point(9, 280);
+            this.collisionsLabel.Name = "collisionsLabel";
+            this.collisionsLabel.Size = new System.Drawing.Size(52, 13);
+            this.collisionsLabel.TabIndex = 7;
+            this.collisionsLabel.Text = "collisions:";
+            // 
+            // delayLabel
+            // 
+            this.delayLabel.AutoSize = true;
+            this.delayLabel.Location = new System.Drawing.Point(9, 319);
+            this.delayLabel.Name = "delayLabel";
+            this.delayLabel.Size = new System.Drawing.Size(59, 13);
+            this.delayLabel.TabIndex = 8;
+            this.delayLabel.Text = "delay avg: ";
+            // 
+            // computeLabel
+            // 
+            this.computeLabel.AutoSize = true;
+            this.computeLabel.Location = new System.Drawing.Point(9, 358);
+            this.computeLabel.Name = "computeLabel";
+            this.computeLabel.Size = new System.Drawing.Size(65, 13);
+            this.computeLabel.TabIndex = 9;
+            this.computeLabel.Text = "ms/collision:";
+            // 
+            // collisionsValue
+            // 
+            this.collisionsValue.AutoSize = true;
+            this.collisionsValue.Location = new System.Drawing.Point(9, 293);
+            this.collisionsValue.Name = "collisionsValue";
+            this.collisionsValue.Size = new System.Drawing.Size(13, 13);
+            this.collisionsValue.TabIndex = 10;
+            this.collisionsValue.Text = "0";
+            // 
+            // delayValue
+            // 
+            this.delayValue.AutoSize = true;
+            this.delayValue.Location = new System.Drawing.Point(9, 332);
+            this.delayValue.Name = "delayValue";
+            this.delayValue.Size = new System.Drawing.Size(13, 13);
+            this.delayValue.TabIndex = 11;
+            this.delayValue.Text = "0";
+            // 
+            // computeValue
+            // 
+            this.computeValue.AutoSize = true;
+            this.computeValue.Location = new System.Drawing.Point(9, 371);
+            this.computeValue.Name = "computeValue";
+            this.computeValue.Size = new System.Drawing.Size(13, 13);
+            this.computeValue.TabIndex = 12;
+            this.computeValue.Text = "0";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.GhostWhite;
             this.ClientSize = new System.Drawing.Size(616, 524);
+            this.Controls.Add(this.computeValue);
+            this.Controls.Add(this.delayValue);
+            this.Controls.Add(this.collisionsValue);
+            this.Controls.Add(this.computeLabel);
+            this.Controls.Add(this.delayLabel);
+            this.Controls.Add(this.collisionsLabel);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.startButton);
             this.Controls.Add(this.label2);
@@ -175,6 +241,12 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button startButton;
         private System.Windows.Forms.Button stopButton;
+        private System.Windows.Forms.Label collisionsLabel;
+        private System.Windows.Forms.Label delayLabel;
+        private System.Windows.Forms.Label computeLabel;
+        private System.Windows.Forms.Label collisionsValue;
+        private System.Windows.Forms.Label delayValue;
+        private System.Windows.Forms.Label computeValue;
     }
 }
 

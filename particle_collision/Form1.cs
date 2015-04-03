@@ -27,10 +27,16 @@ namespace particle_collision
 
         // timer to refresh graphics
         private System.Windows.Forms.Timer RefreshTimer = new System.Windows.Forms.Timer();
-        private readonly int REFRESH_TIMER_INTERVAL = 30; // 30hz
+        private readonly int REFRESH_TIMER_INTERVAL = 40; // 30hz
 
         // keeps track of the current simulation time
         Stopwatch globalTime;
+
+        // statistics
+        Stopwatch statsTime;
+        private long n_collisions = 0;
+        private long delayTime = 0;
+        private long calcTime = 0;
 
 
         public Form1()
@@ -55,6 +61,12 @@ namespace particle_collision
         private void RefreshTimerCallBack(object sender, EventArgs e)
         {
             collisionPanel.Invalidate();
+            if (n_collisions > 0)
+            {
+                delayValue.Text = (delayTime / n_collisions).ToString() + " ms";
+                computeValue.Text = (calcTime / n_collisions).ToString() + " ms";
+                collisionsValue.Text = n_collisions.ToString();
+            }
         }
 
         // initialize particles with random properties
@@ -173,8 +185,11 @@ namespace particle_collision
                     if (delay > 0)
                     {
                         System.Threading.Thread.Sleep(delay);
+                        delayTime += delay;
                     }
+                    n_collisions += 1;
                     globalTime.Stop();
+                    long statsTimeStart = statsTime.ElapsedMilliseconds;
                     // update collidable positions
                     currentTime = globalTime.ElapsedMilliseconds;
                     stepParticles(currentTime);
@@ -183,6 +198,7 @@ namespace particle_collision
                     Collidable.doCollision(c.c1, c.c2);
                     updateCollisionInfos(c1.id, currentTime);
                     updateCollisionInfos(c2.id, currentTime);
+                    calcTime += statsTime.ElapsedMilliseconds - statsTimeStart;
                     globalTime.Start();
                 }
             }
@@ -207,6 +223,9 @@ namespace particle_collision
             // remove particles
             particles.Clear();
             heap.Clear();
+            delayTime = 0;
+            calcTime = 0;
+            n_collisions = 0;
         }
 
         private void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -249,6 +268,7 @@ namespace particle_collision
                 numericUpDown1.Enabled = false;
                 initParticles();
                 globalTime = Stopwatch.StartNew();
+                statsTime = Stopwatch.StartNew();
                 bw.RunWorkerAsync();
             }
         }
@@ -258,7 +278,8 @@ namespace particle_collision
             if (bw.WorkerSupportsCancellation == true)
             {
                 bw.CancelAsync();
-                globalTime.Stop();
+                globalTime.Reset();
+                statsTime.Reset();
                 numericUpDown1.Enabled = true;
             }
         }
